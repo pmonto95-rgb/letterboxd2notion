@@ -15,19 +15,13 @@ jobs:
         run: curl -LsSf https://astral.sh/uv/install.sh | sh
 
       - name: Sync Watchlist
-        env:
-          # Credenciales básicas
+      env:
           LETTERBOXD_USERNAME: ${{ secrets.LETTERBOXD_USERNAME }}
           TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
-          
-          # Variables de Notion (usamos ambos nombres para evitar el error de Pydantic)
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
           TOKEN_V3: ${{ secrets.NOTION_TOKEN }}
-          
-          NOTION_DATABASE_ID: ${{ secrets.DATABASE_ID }}
           DATABASE_ID: ${{ secrets.DATABASE_ID }}
-          
-          # Esta es la clave: sobreescribimos la URL para que apunte a la Watchlist
+          NOTION_DATABASE_ID: ${{ secrets.DATABASE_ID }}
           LETTERBOXD_RSS_URL: "https://letterboxd.com/${{ secrets.LETTERBOXD_USERNAME }}/watchlist/rss/"
-          
         run: uv run letterboxd2notion sync
+        
