@@ -1,33 +1,26 @@
 name: Sync Letterboxd Watchlist
 
 on:
-  workflow_dispatch: # Permite ejecutar el script manualmente con un botón
-  schedule:
-    - cron: '30 3 * * *' # Se ejecuta automáticamente todos los días a las 3:30 AM
+  workflow_dispatch:
 
 jobs:
-  sync-watchlist:
+  sync:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Install uv
         run: curl -LsSf https://astral.sh/uv/install.sh | sh
 
-      - name: Sync Watchlist to Notion
+      - name: Sync Watchlist
         env:
-          # --- Credenciales de usuario y TMDB ---
+          # Estas deben coincidir EXACTAMENTE con tus Secrets de GitHub
           LETTERBOXD_USERNAME: ${{ secrets.LETTERBOXD_USERNAME }}
           TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
-          
-          # --- Credenciales de Notion (doble mapeo para evitar errores) ---
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
           TOKEN_V3: ${{ secrets.NOTION_TOKEN }}
-          NOTION_DATABASE_ID: ${{ secrets.DATABASE_ID }}
           DATABASE_ID: ${{ secrets.DATABASE_ID }}
-          
-          # --- Forzamos la URL para que traiga la Watchlist en lugar del Diario ---
+          NOTION_DATABASE_ID: ${{ secrets.DATABASE_ID }}
+          # URL forzada para Watchlist
           LETTERBOXD_RSS_URL: "https://letterboxd.com/${{ secrets.LETTERBOXD_USERNAME }}/watchlist/rss/"
-          
         run: uv run letterboxd2notion sync
