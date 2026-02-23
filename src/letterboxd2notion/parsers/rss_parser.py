@@ -34,7 +34,7 @@ async def parse_rss_feed(
         ParseError: If RSS cannot be parsed
         RateLimitError: If rate limited by Letterboxd
     """
-    response = await client.get(url, headers={"User-Agent": "Mozilla/5.0"})
+    response = await client.get(rss_url, headers={"User-Agent": "Mozilla/5.0"})
 
     if response.status_code == 429:
         raise RateLimitError(retry_after=int(response.headers.get("Retry-After", 60)))
