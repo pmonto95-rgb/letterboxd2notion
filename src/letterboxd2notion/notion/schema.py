@@ -13,6 +13,7 @@ SCHEMA = {
     "Letterboxd ID": {"rich_text": {}},
     "TMDB ID": {"number": {"format": "number"}},
     "Rewatch": {"checkbox": {}},
+    "Status": {"select": {"name": "Visto"}},
 }
 
 
