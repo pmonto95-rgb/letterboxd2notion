@@ -30,18 +30,21 @@ class Settings(BaseSettings):
 
     @property
     def letterboxd_rss_url(self) -> str:
-        """URL to user's Letterboxd RSS feed."""
-        return f"https://letterboxd.com/{self.letterboxd_username}/rss/"
+        """Get the Letterboxd RSS URL."""
+        import os
+        return os.getenv("LETTERBOXD_RSS_URL") or f"https://letterboxd.com/{self.letterboxd_username}/rss/"
 
     @property
     def letterboxd_diary_url(self) -> str:
-        """URL to user's Letterboxd diary page."""
-        return f"https://letterboxd.com/{self.letterboxd_username}/films/diary"
+        """Get the Letterboxd diary URL."""
+        import os
+        return os.getenv("LETTERBOXD_DIARY_URL") or f"https://letterboxd.com/{self.letterboxd_username}/diary/"
 
     @property
-    def letterboxd_diary_url_alt(self) -> str:
-        """Alternative diary URL (Letterboxd sometimes redirects)."""
-        return f"https://letterboxd.com/{self.letterboxd_username}/diary"
+    def letterboxd_films_url(self) -> str:
+        """Get the Letterboxd films URL."""
+        import os
+        return os.getenv("LETTERBOXD_FILMS_URL") or f"https://letterboxd.com/{self.letterboxd_username}/films/"
 
 
 @lru_cache
