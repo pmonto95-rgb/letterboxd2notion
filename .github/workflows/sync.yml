@@ -23,7 +23,7 @@ jobs:
         run: uv sync
 
       - name: Sync from RSS
-        run: uv run letterboxd2notion sync
+        run: uv run letterboxd2notion init-schema
         env:
           TOKEN_V3: ${{ secrets.TOKEN_V3 }}
           DATABASE_ID: ${{ secrets.DATABASE_ID }}
