@@ -7,21 +7,20 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Install uv
         run: curl -LsSf https://astral.sh/uv/install.sh | sh
 
       - name: Sync Watchlist
-      env:
+        env:
           LETTERBOXD_USERNAME: ${{ secrets.LETTERBOXD_USERNAME }}
           TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
           NOTION_TOKEN: ${{ secrets.TOKEN_V3 }}
           TOKEN_V3: ${{ secrets.TOKEN_V3 }}
           DATABASE_ID: ${{ secrets.DATABASE_ID }}
           NOTION_DATABASE_ID: ${{ secrets.DATABASE_ID }}
-          # CAMBIO: Usamos la URL de la web, no la del RSS
+          # Usamos la URL de la web para el modo --full
           LETTERBOXD_DIARY_URL: "https://letterboxd.com/${{ secrets.LETTERBOXD_USERNAME }}/watchlist/"
-        
-        # CAMBIO: Añadimos --full para que use el scraper de web
-        run: uv run letterboxd2notion sync
+        run: uv run letterboxd2notion sync --full
