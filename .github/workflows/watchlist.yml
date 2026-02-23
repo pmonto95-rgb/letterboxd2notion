@@ -1,1 +1,22 @@
+name: Sync Letterboxd Watchlist
 
+on:
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install uv
+        run: curl -LsSf https://astral.sh/uv/install.sh | sh
+      - name: Sync Watchlist
+        env:
+          LETTERBOXD_USERNAME: ${{ secrets.LETTERBOXD_USERNAME }}
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_DATABASE_ID: ${{ secrets.DATABASE_ID }} # Usamos la misma ID
+          TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
+        # Aquí forzamos la URL de la Watchlist manualmente
+        run: |
+          export LETTERBOXD_RSS_URL="https://letterboxd.com/${{ secrets.LETTERBOXD_USERNAME }}/watchlist/rss/"
+          uv run letterboxd2notion sync
