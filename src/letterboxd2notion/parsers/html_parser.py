@@ -37,8 +37,17 @@ async def parse_diary_page(
     soup = BeautifulSoup(response.content, "html.parser")
     films: list[Film] = []
 
-    for row in soup.select("tr.diary-entry-row"):
-        film = _parse_diary_row(row)
+    # Buscamos filas de diario (tr) O elementos de la lista de watchlist (li)
+    items = soup.select("tr.diary-entry-row, li.poster-container")
+
+    for item in items:
+        # Si es una fila, procesa como diario
+        if item.name == "tr":
+            film = _parse_diary_row(item)
+        # Si es un elemento de lista, procesa como watchlist
+        else:
+            film = _parse_watchlist_item(item)
+            
         if film:
             films.append(film)
 
@@ -46,7 +55,31 @@ async def parse_diary_page(
     has_more = len(films) > 0
 
     return films, has_more
+    
+def _parse_watchlist_item(item: Tag) -> Film | None:
+    """Extrae datos de una película de la Watchlist."""
+    poster_div = item.select_one("div.film-poster")
+    if not poster_div:
+        return None
 
+    # En la watchlist el título y el slug están en estos atributos
+    title = poster_div.get("data-item-name") or (item.select_one("img").get("alt") if item.select_one("img") else "Unknown")
+    slug = poster_div.get("data-film-slug")
+    
+    if not slug:
+        return None
+
+    return Film(
+        letterboxd_id=f"watchlist-{slug}",
+        tmdb_id=None,
+        title=title,
+        year=0,
+        letterboxd_url=f"https://letterboxd.com/film/{slug}/",
+        rating=None,
+        watched_date=None,
+        rewatch=False,
+        review=None,
+    )
 
 def _parse_diary_row(row: Tag) -> Film | None:
     """Parse a single diary table row."""
