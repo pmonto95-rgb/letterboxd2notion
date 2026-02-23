@@ -21,6 +21,5 @@ jobs:
           TOKEN_V3: ${{ secrets.TOKEN_V3 }}
           DATABASE_ID: ${{ secrets.DATABASE_ID }}
           NOTION_DATABASE_ID: ${{ secrets.DATABASE_ID }}
-          # Usamos la URL de la web para el modo --full
           LETTERBOXD_DIARY_URL: "https://letterboxd.com/${{ secrets.LETTERBOXD_USERNAME }}/watchlist/"
         run: uv run letterboxd2notion sync --full
