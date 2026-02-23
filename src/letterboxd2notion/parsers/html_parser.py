@@ -28,8 +28,8 @@ async def parse_diary_page(
         Tuple of (films, has_more_pages)
     """
     url = f"{diary_url}/page/{page}/"
-    response = await client.get(url, headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"})
-    
+    response = await client.get(url, follow_redirects=True)
+
     if response.status_code == 429:
         raise RateLimitError()
     response.raise_for_status()
