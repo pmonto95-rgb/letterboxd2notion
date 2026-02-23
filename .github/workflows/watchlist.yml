@@ -13,19 +13,15 @@ jobs:
         run: curl -LsSf https://astral.sh/uv/install.sh | sh
 
       - name: Sync Watchlist
-        env:
-          # Usamos los nombres EXACTOS de tus secretos de GitHub
+      env:
           LETTERBOXD_USERNAME: ${{ secrets.LETTERBOXD_USERNAME }}
           TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
-          
-          # Mapeamos tu TOKEN_V3 a lo que el script espera
           NOTION_TOKEN: ${{ secrets.TOKEN_V3 }}
           TOKEN_V3: ${{ secrets.TOKEN_V3 }}
-          
-          # Mapeamos tu DATABASE_ID
           DATABASE_ID: ${{ secrets.DATABASE_ID }}
           NOTION_DATABASE_ID: ${{ secrets.DATABASE_ID }}
-          
-          # URL para la Watchlist
-          LETTERBOXD_RSS_URL: "https://letterboxd.com/${{ secrets.LETTERBOXD_USERNAME }}/watchlist/rss/"
-        run: uv run letterboxd2notion sync
+          # CAMBIO: Usamos la URL de la web, no la del RSS
+          LETTERBOXD_DIARY_URL: "https://letterboxd.com/${{ secrets.LETTERBOXD_USERNAME }}/watchlist/"
+        
+        # CAMBIO: Añadimos --full para que use el scraper de web
+        run: uv run letterboxd2notion sync --full
