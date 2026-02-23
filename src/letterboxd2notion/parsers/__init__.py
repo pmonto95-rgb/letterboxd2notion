@@ -32,7 +32,7 @@ async def enrich_film_with_tmdb(
 
     return film.model_copy(
         update={
-            "backdrop_url": f"{TMDB_IMAGE_BASE}/w1280{backdrop_path}" if backdrop_path else None,
+            "backdrop_url": f"{TMDB_IMAGE_BASE}/w500{poster_path}" if poster_path else None,
             "poster_url": f"{TMDB_IMAGE_BASE}/w500{poster_path}" if poster_path else None,
             "tmdb_id": movie_data.get("id") if film.tmdb_id is None else film.tmdb_id,
         }
