@@ -14,13 +14,18 @@ jobs:
 
       - name: Sync Watchlist
         env:
-          # Estas deben coincidir EXACTAMENTE con tus Secrets de GitHub
+          # Usamos los nombres EXACTOS de tus secretos de GitHub
           LETTERBOXD_USERNAME: ${{ secrets.LETTERBOXD_USERNAME }}
           TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
-          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
-          TOKEN_V3: ${{ secrets.NOTION_TOKEN }}
+          
+          # Mapeamos tu TOKEN_V3 a lo que el script espera
+          NOTION_TOKEN: ${{ secrets.TOKEN_V3 }}
+          TOKEN_V3: ${{ secrets.TOKEN_V3 }}
+          
+          # Mapeamos tu DATABASE_ID
           DATABASE_ID: ${{ secrets.DATABASE_ID }}
           NOTION_DATABASE_ID: ${{ secrets.DATABASE_ID }}
-          # URL forzada para Watchlist
+          
+          # URL para la Watchlist
           LETTERBOXD_RSS_URL: "https://letterboxd.com/${{ secrets.LETTERBOXD_USERNAME }}/watchlist/rss/"
         run: uv run letterboxd2notion sync
