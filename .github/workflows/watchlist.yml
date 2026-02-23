@@ -24,4 +24,4 @@ jobs:
           LETTERBOXD_DIARY_URL: "https://letterboxd.com/${{ secrets.LETTERBOXD_USERNAME }}/watchlist/"
         
         # CAMBIO: Añadimos --full para que use el scraper de web
-        run: uv run letterboxd2notion sync --full
+        run: uv run letterboxd2notion sync
